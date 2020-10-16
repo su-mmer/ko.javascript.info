@@ -15,17 +15,17 @@ let socket = new WebSocket("*!*ws*/!*://javascript.info");
 `ws`말고 `wss://`라는 프로토콜도 있는데, 두 프로토콜의 관계는 HTTP와 HTTPS의 관계와 유사하다고 보시면 됩니다.
 
 ```smart header="항상 `wss://`를 사용합시다."
-The `wss://` protocol is not only encrypted, but also more reliable.
+`wss://`는 보안 이외에도 신뢰성(reliability) 측면에서 `ws`보다 좀 더 신뢰할만한 프로토콜입니다.
 
 That's because `ws://` data is not encrypted, visible for any intermediary. Old proxy servers do not know about WebSocket, they may see "strange" headers and abort the connection.
 
 반면 `wss://`는 TSL(전송 계층 보안(Transport Layer Security))이라는 보안 계층을 통과해 전달되므로 송신자 측에서 데이터가 암호화되고, 복호화는 수신자 측에서 이뤄지게 됩니다. 따라서 데이터가 담긴 패킷은 암호화된 상태로 프락시 서버를 통과하므로 프락시 서버는 패킷 내부를 볼 수 없게 됩니다. 
 ```
 
-Once the socket is created, we should listen to events on it. There are totally 4 events:
+소켓이 정상적으로 만들어지면 아래 네 개의 이벤트를 사용할 수 있게 됩니다.
 - **`open`** -- 커넥션이 제대로 만들어짐
 - **`message`** -- data received,
-- **`error`** -- websocket error,
+- **`error`** -- 웹소켓 에러
 - **`close`** -- 커넥션 종료
 
 커넥션이 만들어진 상태에서 무언가를 보내고 싶으면 `socket.send(data)`를 사용하면 됩니다.
@@ -50,7 +50,7 @@ socket.onclose = function(event) {
     alert(`[close] 커넥션이 정상적으로 종료되었습니다(code=${event.code} reason=${event.reason})`);
   } else {
     // 예시: 프로세스가 죽거나 네트워크에 장애가 있는 경우
-    // event.code is usually 1006 in this case
+    // event.code가 1006이 됩니다.
     alert('[close] 커넥션이 죽었습니다.');
   }
 };
